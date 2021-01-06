@@ -25,7 +25,6 @@ public class DayService {
             GbjCollection dayStubs = (GbjCollection) client.getSession().doit("Day allDays");
             GbjObject dayStub = dayStubs.detect("[:cust | cust status = 1]");
             client.disconnect();
-            // .getObjs()
             return Optional.of(dayStub);
         } catch (GbjEventException | GbjException e) {
             log.error("GemStone exception error: " + e.getMessage());
@@ -36,7 +35,8 @@ public class DayService {
     public void closeDay(GbjObject dayStub) {
         try {
             client.connect();
-            dayStub.sendMsg("status:", 2);
+            Object[] args = {System.currentTimeMillis(), 2};
+            dayStub.sendMsg("date:status", args);
             client.disconnect();
         } catch (GbjEventException | GbjException e) {
             log.error("GemStone exception error: " + e.getMessage());
@@ -46,7 +46,8 @@ public class DayService {
     public void openDay(GbjObject dayStub) {
         try {
             client.connect();
-            dayStub.sendMsg("status:", 1);
+            Object[] args = {System.currentTimeMillis(), 1};
+            dayStub.sendMsg("date:status:", args);
             client.disconnect();
         } catch (GbjEventException | GbjException e) {
             log.error("GemStone exception error: " + e.getMessage());
@@ -56,8 +57,9 @@ public class DayService {
     public Optional<GbjObject> createDay() {
         try {
             client.connect();
+            Object[] args = {System.currentTimeMillis(), 0};
             GbjObject dayClass = client.getSession().objectNamed("Day");
-            GbjObject dayStub = dayClass.sendMsg("status:", 1);
+            GbjObject dayStub = dayClass.sendMsg("date:status:", args);
             GbjCollection allDays = (GbjCollection) dayClass.sendMsg("allDays");
             allDays.add(dayStub);
             client.disconnect();

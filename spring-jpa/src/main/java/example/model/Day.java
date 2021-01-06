@@ -21,5 +21,7 @@ public class Day {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private Long date;
+
     private Integer status;
 }

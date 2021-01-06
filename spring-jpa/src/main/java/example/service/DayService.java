@@ -24,7 +24,7 @@ public class DayService {
     public void closeDay(Long id) {
         Optional<Day> day = repository.findById(id);
         day.ifPresent(value -> {
-            value.setStatus(2);
+            value.setStatus(2).setDate(System.currentTimeMillis());
             repository.save(day.get());
         });
     }
@@ -32,13 +32,13 @@ public class DayService {
     public void openDay(Long id) {
         Optional<Day> day = repository.findById(id);
         day.ifPresent(value -> {
-            value.setStatus(1);
+            value.setStatus(1).setDate(System.currentTimeMillis());
             repository.save(day.get());
         });
     }
 
     public Long createDay() {
-        Day day = new Day();
+        Day day = new Day().setStatus(0).setDate(System.currentTimeMillis());
         return repository.save(day).getId();
     }
 

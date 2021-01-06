@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class Day {
+    private Long date;
     private Integer status;
 
     public void close() {
